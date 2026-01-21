@@ -1,21 +1,16 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from ui_tests.pages.base_page import BasePage
 
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(self.driver, 10)
-    username=(By.ID, "user-name")
-    password=(By.ID, "password")
-    login_btn=(By.ID, "login-button")
-    error_msg = (By.XPATH, "//h3[@data-test='error']")
 
-    def login(self, user, pwd):
-        self.wait.until(EC.visibility_of_element_located(self.username)).send_keys(user)
-        self.wait.until(EC.visibility_of_element_located(self.password)).send_keys(pwd)
-        self.wait.until(EC.element_to_be_clickable(self.login_btn)).click()
+class LoginPage(BasePage):
+    USERNAME = (By.ID, "user-name")
+    PASSWORD = (By.ID, "password")
+    LOGIN_BTN = (By.ID, "login-button")
 
-    def get_error(self):
-        return self.wait.until(
-            EC.visibility_of_element_located(self.error_msg)).text
+    def open(self):
+        self.driver.get("https://www.saucedemo.com/")
+
+    def login(self, username, password):
+        self.type(self.USERNAME, username)
+        self.type(self.PASSWORD, password)
+        self.click(self.LOGIN_BTN)

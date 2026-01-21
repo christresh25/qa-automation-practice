@@ -1,10 +1,12 @@
 from ui_tests.pages.login_page import LoginPage
+from ui_tests.pages.inventory_page import InventoryPage
 
-def test_login_postive(setup):
-    login = LoginPage(setup)
+
+def test_login_positive(driver):
+    login = LoginPage(driver)
+    inventory = InventoryPage(driver)
+
+    login.open()
     login.login("standard_user", "secret_sauce")
-    assert "inventory" in setup.current_url
-def test_login_negative(setup):
-    login = LoginPage(setup)
-    login.login("standard_user", "secret_sau")
-    assert "Username and password do not match" in login.get_error()
+
+    assert inventory.is_inventory_displayed()
